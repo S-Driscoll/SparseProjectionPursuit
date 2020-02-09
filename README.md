@@ -1,7 +1,7 @@
 Sparse Projection Pursuit (SPPA)
 =====================
 
-<img src="https://S-Driscoll.github.io/src/common/GraphAbs.png" alt="SPPA" width="500" align="middle"/>
+<img src="https://S-Driscoll.github.io/img/Graph_abs.png" alt="SPPA" width="500" align="middle"/>
 
 Manuscript
 -------------
