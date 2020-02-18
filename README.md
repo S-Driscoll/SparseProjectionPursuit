@@ -10,7 +10,7 @@ Kurtosis-based projection pursuit analysis (PPA) was developed as an alternative
 <img src="https://S-Driscoll.github.io/img/alg.png" alt="Sparse Projection Pursuit" width="400"/>
 </h1>
 
-MATLAB Function 
+MATLAB Function
 ----------
 
 * `SPPA.m` is a MATLAB function to perform sparse kurtosis-based projection pursuit using a genetic algorithm.
@@ -30,6 +30,8 @@ Literature related to SPPA
 
 Examples 
 -------------
-To be completed.
+To be completed. Please check `demo.m` for a quick demonstration showing the use of SPPA to explore a Salmon plasma data set (Nuclear Magnetic Resonance (NMR) Spectroscopy).
 
+<!---### Salmon clustering using Nuclear Magnetic Resonance (NMR) Spectroscopy
+This example uses data found in the mat file `Salmon.mat` in this repository with an example analysis using SPPA found in `demo.m`--->
 
