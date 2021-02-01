@@ -1,4 +1,13 @@
 function [T,V,Var,kurt]=SPPA(X,varargin)
+%
+% Modification of the original version.
+%   o Added improved selection of initial population to ensure maximum
+%     coverage of variables. If population size is sufficient, each
+%     variable is selected a minimum of n times. Residual individuals are
+%     selected at random without repetition. This is more equitable than
+%     the original version which might exclude some variables and
+%     over-represent others.
+%
 % SPPA sparse projection pursuit analysis using genetic algorithm.
 %
 % Outputs:
@@ -117,7 +126,8 @@ if strcmp('mul',f.meth)
     dimvar=1;
     pursuitdim=f.dim;
     f.ctoff=4.5;
-else dimvar=f.dim;
+else
+    dimvar=f.dim;
     pursuitdim=1;
 end
 
@@ -127,7 +137,8 @@ variables=zeros(dimvar,f.nvars); %Will hold chosen variables
 vectors=zeros(totvars,f.dim);
 if rem(f.popsize,2) %Set number of elite individuals
     numret=1;
-else numret=2;
+else
+    numret=2;
 end
 nchild=f.popsize-numret; %the remaining population is made of retained individuals
 %Mean center the data:
@@ -143,16 +154,42 @@ for d=1:f.dim
     fitness=zeros(f.popsize,f.maxgen); %Matrix storing fitness of all previous individuals
     
     %% Construct initial population
-    %     disp('Generation 1')
-    for i=1:f.popsize
-        pop(i,:)=randperm(totvars,f.nvars);
-        [~,~,PPOUT]=projpursuit(X(:,pop(i,:)),pursuitdim,1,f.meth,f.opt);
-        fitness(i,1)=PPOUT.K;
+    % Modified code for initial population.  Designed to ensure balanced
+    % representation of all variables. If popsize*nvar>=totvars, population is
+    % divided into n3 groups, where each variable is represented at least once.
+    % Residual number (n4) are filled randomly without repetition. This ensures
+    % maximum, unbiased coverage of variables.
+    %
+    n1=ceil(totvars/f.nvars);           % Number for full group
+    n2=rem(totvars,f.nvars);            % Number in last cell
+    n3=floor(f.popsize/n1);             % Number of full groups
+    n4=rem(f.popsize,n1);               % Number left over
+    for igrp=1:n3              % Fills in each group
+        temp=1;                % Note: last member may need padding
+        while temp~=0          % This ensures no repetition in last member
+            indx1=[randperm(totvars) randperm(totvars,rem(f.nvars-n2,f.nvars))];
+            temp=f.nvars-length(unique(indx1(end-f.nvars+1:end)));
+        end
+        indx1=reshape(indx1,f.nvars,n1)'; % indx1 contains all variables
+        indx2=(igrp-1)*n1;                % Starting index to add to pop
+        for jj=1:n1                       % Add to population
+            indx3=indx2+jj;
+            pop(indx3,:)=indx1(jj,:);
+            [~,~,PPOUT]=projpursuit(X(:,pop(indx3,:)),pursuitdim,1,f.meth,f.opt);
+            fitness(indx3,1)=PPOUT.K;
+        end
+    end
+    indx2=n3*n1;                         % This part adds residual to pop
+    indx1=randperm(totvars,n4*f.nvars);  % Generate residual members
+    indx1=reshape(indx1,f.nvars,n4)';
+    for jj=1:n4                          % Add to pop
+        indx3=indx2+jj;
+        pop(indx3,:)=indx1(jj,:);
+        [~,~,PPOUT]=projpursuit(X(:,pop(indx3,:)),pursuitdim,1,f.meth,f.opt);
+        fitness(indx3,1)=PPOUT.K;
     end
     [fitness(:,1),isort]=sort(fitness(:,1)); %sort individuals by fitness
-    for i=1:f.popsize
-        pop(i,:)=pop(isort(i),:);
-    end
+    pop=pop(isort,:);
     
     %%
     populations(:,:,1)=pop; %Store first generation
@@ -188,15 +225,6 @@ for d=1:f.dim
             clf
             drawnow
         end
-        %         plot(median(fitness(:,1:k)),'r','LineWidth',2.5)
-        %         hold on
-        %         plot(min(fitness(:,1:k)),'b','LineWidth',2.5)
-        %         legend('Median kurtosis','Minimum kurtosis')
-        %         xlabel('Generation number')
-        %         ylabel('Fitness')
-        %         set(gca,'LineWidth',2,'FontSize',9,'FontWeight','bold')
-        %         drawnow
-        %
         if k>2
             delete(h1);
             delete(h2);
@@ -271,53 +299,6 @@ if strcmp('mul',f.meth)==false
     vectors=V;
     scores=X0*V;
 end
-
-%% Plotting
-% figure
-% if iscell(f.objclass) %Convert cell array to matrix if necessary
-%     f.objclass=cell2mat(f.objclass);
-% end
-% if size(f.classlist)>1 %Reduce objclass cell array to one dimension if necessary
-%     f.classlist=f.classlist(:,1);
-% end
-% if isempty(f.objclass)==false
-%     if isempty(f.classlist)
-%         for i=1:max(f.objclass) %Make generic group names if no classs names
-%             f.classlist{i}=['Group ' num2str(i)];
-%         end
-%     end
-%     Color=[255 57 33;215 25 232;53 33 255;29 156 207; ...
-%         12 178 85;122 43 12;0 0 0;29 84 74]./255;
-%     if f.dim==1
-%         for i=1:max(f.objclass) %Plot in 2d with colour
-%             plot(scores(f.objclass==i,1),rand(sum(f.objclass==i),1),'.','Color',Color(i,:),'MarkerSize',5)
-%             hold on
-%         end
-%         legend(f.classlist,'Location','BestOutside')
-%     end
-%     if f.dim==2
-%         for i=1:max(f.objclass) %Plot in 2d with colour
-%             plot(scores(f.objclass==i,1),scores(f.objclass==i,2),'o','Color',Color(i,:),'MarkerSize',5)
-%             hold on
-%         end
-%         legend(f.classlist,'Location','BestOutside')
-%     elseif f.dim==3
-%         for i=1:max(f.objclass) %Plot in 3d with colour
-%             hold on
-%             plot3(scores(f.objclass==i,1),scores(f.objclass==i,2), ...
-%                 scores(f.objclass==i,3),'.','Color',Color(i,:),'MarkerSize',10)
-%         end
-%         legend(f.classlist,'Location','BestOutside')
-%     end
-%     hold off
-% else
-%     if f.dim==2 %Plot all in black if no classes are given
-%         plot(scores(:,1),scores(:,2),'.k','MarkerSize',5)
-%     elseif f.dim==3
-%         plot3(scores(:,1),scores(:,2), ...
-%             scores(:,3),'.k','MarkerSize',5)
-%     end
-% end
 toc
 end
 
