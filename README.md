@@ -17,7 +17,7 @@ MATLAB function
 
 Citing this algorithm
 ----------
-Please cite [Sparse Projection Pursuit Analysis: An Alternative for Exploring Multivariate Chemical Data (2020)](https://pubs.acs.org/doi/abs/10.1021/acs.analchem.9b03166)
+Please cite [Sparse Projection Pursuit Analysis: An Alternative for Exploring Multivariate Chemical Data (2020)](https://pubs.acs.org/doi/abs/10.1021/acs.analchem.9b03166).
 
 Structure of this repository
 ----------
