@@ -427,9 +427,7 @@ for i=1:f.popsize
     fitness(i,1)=f.sumprod(tempkurt1); %Calculate fitness based on sum or prod, as chosen
 end
 [fitness(:,1),isort]=sort(fitness(:,1)); %sort individuals by fitness
-for i=1:f.popsize
-    pop(i,:)=pop(isort(i),:);
-end
+pop=pop(isort,:);
 
 %%
 populations(:,:,1)=pop; %Store first generation
