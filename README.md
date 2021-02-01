@@ -15,6 +15,10 @@ MATLAB Function
 
 * `SPPA.m` is a MATLAB function to perform sparse kurtosis-based projection pursuit using a genetic algorithm.
 
+Citing this algorithm
+----------
+Please cite [Sparse Projection Pursuit Analysis: An Alternative for Exploring Multivariate Chemical Data (2020)](https://pubs.acs.org/doi/abs/10.1021/acs.analchem.9b03166)
+
 Literature related to PPA
 -------------
 
