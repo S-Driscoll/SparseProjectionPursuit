@@ -1,4 +1,4 @@
-Sparse Projection Pursuit (SPPA)
+Sparse Projection Pursuit Analysis (SPPA)
 =====================
 <h1 align="center">
 <img src="https://S-Driscoll.github.io/img/Graph_abs.png" alt="SPPA" width="400"/>
@@ -10,7 +10,7 @@ Kurtosis-based projection pursuit analysis (PPA) was developed as an alternative
 <img src="https://S-Driscoll.github.io/img/alg.png" alt="Sparse Projection Pursuit" width="400"/>
 </h1>
 
-MATLAB Function
+MATLAB function
 ----------
 
 * `SPPA.m` is a MATLAB function to perform sparse kurtosis-based projection pursuit using a genetic algorithm.
