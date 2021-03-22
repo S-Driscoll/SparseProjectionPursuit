@@ -26,7 +26,7 @@ The master branch of this repository contains the original SPPA code (version 1.
 Current branches
 ----------
 * Master - Original SPPA code (version 1.0)
-* Version 1.1 -Improved selection of initial population to ensure maximum coverage of variables. If population size is sufficient, each variable is selected a minimum of n times. Residual individuals are selected at random without repetition. This is more equitable than the original version which might exclude some variables and over-represent others.
+* Version 1.1 - Improved selection of initial population to ensure maximum coverage of variables. If population size is sufficient, each variable is selected a minimum of n times. Residual individuals are selected at random without repetition. This is more equitable than the original version which might exclude some variables and over-represent others.
 
 Literature related to PPA
 -------------
