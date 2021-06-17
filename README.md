@@ -43,7 +43,7 @@ Literature related to SPPA
 
 Examples 
 -------------
-To be completed. Please check `demo.m` for a quick demonstration showing the use of SPPA to explore a Salmon plasma data set (Nuclear Magnetic Resonance (NMR) Spectroscopy).
+To be completed. Please check `demo.m` for a quick demonstration showing the use of SPPA to explore a salmon plasma data set (Nuclear Magnetic Resonance (NMR) Spectroscopy).
 
 <!---### Salmon clustering using Nuclear Magnetic Resonance (NMR) Spectroscopy
 This example uses data found in the mat file `Salmon.mat` in this repository with an example analysis using SPPA found in `demo.m`--->
