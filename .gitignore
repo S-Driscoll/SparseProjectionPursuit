@@ -1,2 +1,3 @@
-
+.venv
 *.asv
+__pycache__

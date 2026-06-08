@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sppa"
+version = "1.1.0"
+description = "Sparse Projection Pursuit Analysis using a genetic algorithm"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.23",
+]
+
+[project.optional-dependencies]
+plots = ["matplotlib>=3.5"]
+scipy = ["scipy>=1.9"]
+dev = ["pytest", "pytest-cov"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sppa"]
